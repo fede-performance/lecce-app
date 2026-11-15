@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B2A55">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lecce Perf">
+<title>US Lecce · Performance</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<script src="config.js"></script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<style>
+:root{--navy:#0B2A55;--navy2:#123A70;--y:#F7C600;--r:#C8102E;--bg:#F3F5F8;--card:#fff;--line:#DCE2EB;--fg:#0D1A2D;--fg2:#4A5568;--fg3:#6E7889;
+  --ok:#1E8E3E;--okw:#E6F4EA;--warn:#E8A200;--warnw:#FFF4D6;--crit:#C8102E;--critw:#FBE3E6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color-scheme:light}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header{background:var(--navy);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 18px 16px;display:flex;align-items:center;gap:14px;position:relative}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:4px;background:linear-gradient(90deg,var(--y) 50%,var(--r) 50%)}
+header img{width:40px;height:50px;object-fit:contain}
+header .t{flex:1;min-width:0}
+header .e{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--y);font-weight:700}
+header h1{margin:2px 0 0;font-size:21px;line-height:1.15;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header .d{font-size:12.5px;opacity:.8}
+main{padding:20px 14px 10px;max-width:560px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:17px}
+.task{display:flex;align-items:center;gap:14px}
+.task .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:24px;flex:none;background:var(--bg)}
+.task .tx{flex:1;min-width:0}
+.task .tx b{display:block;font-size:17px}
+.task .tx span{font-size:13.5px;color:var(--fg2)}
+.task.done .ic{background:var(--okw)} .task.todo .ic{background:var(--warnw)} .task.late .ic{background:var(--critw)}
+.badge{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.badge.ok{background:var(--okw);color:var(--ok)} .badge.todo{background:var(--warnw);color:#8a5d00} .badge.late{background:var(--critw);color:var(--crit)} .badge.off{background:var(--bg);color:var(--fg3)}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:700;margin-top:12px;cursor:pointer;text-align:center;text-decoration:none}
+.btn.main{background:var(--r);color:#fff}
+.btn.sec{background:var(--bg);color:var(--fg);border:1px solid var(--line)}
+.btn.y{background:var(--y);color:var(--navy)}
+.note{font-size:13px;color:var(--fg3);margin:6px 2px 0}
+.ev{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.ev:first-of-type{border-top:0}
+.ev .h{font-weight:800;font-size:15px;min-width:52px;color:var(--navy)}
+.ev .w b{display:block;font-size:15px}
+.ev .w span{font-size:13px;color:var(--fg2)}
+.day{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin:16px 2px 6px}
+.day.today{color:var(--r)}
+.av{border-left:4px solid var(--y);padding:8px 12px;background:var(--bg);border-radius:0 10px 10px 0;margin-top:10px;font-size:15px;white-space:pre-wrap}
+.av small{display:block;color:var(--fg3);font-size:12px;margin-bottom:3px}
+.ex{white-space:pre-wrap;font-size:15.5px;line-height:1.7;background:var(--bg);border-radius:10px;padding:10px 14px;margin-top:8px}
+.empty{color:var(--fg3);text-align:center;padding:16px 4px;font-size:14.5px}
+.banner{border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:14.5px;line-height:1.45}
+.banner.info{background:#E8F0FE;border:1px solid #c8d8f5}
+.banner.err{background:var(--critw);border:1px solid #f0b8c1}
+.banner b{display:block;font-size:15.5px;margin-bottom:2px}
+.steps{margin:8px 0 0;padding-left:20px} .steps li{margin:4px 0}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav button{flex:1;border:0;background:none;padding:9px 0 8px;font-size:11.5px;color:var(--fg3);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-weight:600}
+nav button i{font-style:normal;font-size:21px;filter:grayscale(1);opacity:.7}
+nav button.on{color:var(--r)} nav button.on i{filter:none;opacity:1}
+nav button{position:relative} nav .dot::after{content:"";position:absolute;top:6px;right:calc(50% - 20px);width:8px;height:8px;border-radius:50%;background:var(--r)}
+.sk{height:16px;border-radius:8px;background:linear-gradient(90deg,#e8ecf2,#f4f6f9,#e8ecf2);background-size:200% 100%;animation:sk 1.3s infinite linear;margin:10px 0}
+@keyframes sk{to{background-position:-200% 0}}
+section[hidden]{display:none}
+</style>
+</head>
+<body>
+<header>
+  <img src="crest.png" alt="US Lecce">
+  <div class="t"><div class="e">US Lecce · Performance</div><h1 id="hi">Ciao!</h1><div class="d" id="dt"></div></div>
+</header>
+
+<main>
+  <div id="msg"></div>
+
+  <section id="s-oggi">
+    <div id="notif"></div>
+    <div class="card" id="c-morning"><div class="sk"></div><div class="sk"></div></div>
+    <div class="card" id="c-rpe"><div class="sk"></div></div>
+    <div class="card" id="c-next"></div>
+  </section>
+
+  <section id="s-programma" hidden><div class="card" id="c-prog"><div class="sk"></div></div></section>
+  <section id="s-palestra" hidden><div id="c-gym"><div class="card"><div class="sk"></div></div></div></section>
+  <section id="s-avvisi" hidden><div class="card" id="c-avv"><div class="sk"></div></div></section>
+</main>
+
+<nav>
+  <button data-s="oggi" class="on"><i>🏠</i>Oggi</button>
+  <button data-s="programma"><i>📅</i>Programma</button>
+  <button data-s="palestra"><i>🏋️</i>Palestra</button>
+  <button data-s="avvisi"><i id="avdot">📢</i>Avvisi</button>
+</nav>
+
+<script>
+(function () {
+  var CFG = window.LECCE_CONFIG || {};
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var GG = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+  var MM = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+  var qs = new URLSearchParams(location.search);
+  var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+                set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+
+  // codice personale: dal link (?c=...) e poi ricordato
+  var code = (qs.get('c') || store.get('lecce_c') || '').trim().toUpperCase();
+  if (qs.get('c')) store.set('lecce_c', code);
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  var data = null;
+
+  function fmtDay(k, long) {
+    var p = k.split('-'), d = new Date(+p[0], +p[1] - 1, +p[2]);
+    return (long ? GG[d.getDay()] + ' ' : '') + d.getDate() + ' ' + MM[d.getMonth()];
+  }
+  function todayKey() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  $('dt').textContent = fmtDay(todayKey(), true);
+
+  /* ── navigazione */
+  function show(s) {
+    ['oggi', 'programma', 'palestra', 'avvisi'].forEach(function (x) { $('s-' + x).hidden = x !== s; });
+    Array.prototype.forEach.call(document.querySelectorAll('nav button'), function (b) { b.classList.toggle('on', b.dataset.s === s); });
+    if (s === 'avvisi' && data && data.avvisi.length) { store.set('lecce_av', data.avvisi[0].quando + data.avvisi[0].testo); $('avdot').parentNode.classList.remove('dot'); }
+    window.scrollTo(0, 0);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('nav button'), function (b) { b.onclick = function () { show(b.dataset.s); }; });
+
+  if (!code) {
+    $('msg').innerHTML = '<div class="banner info"><b>Benvenuto!</b>Apri il <b>link personale</b> che ti ha mandato lo staff: serve una sola volta, poi l\'app si ricorda di te.</div>';
+    $('s-oggi').hidden = true; document.querySelector('nav').hidden = true;
+    return;
+  }
+  if (!CFG.API_URL) { $('msg').innerHTML = '<div class="banner err"><b>App non ancora configurata</b>Manca API_URL in config.js.</div>'; return; }
+
+  /* ── notifiche (OneSignal) */
+  function notifBox() {
+    var box = $('notif');
+    if (!CFG.ONESIGNAL_APP_ID) { box.innerHTML = ''; return; }
+    if (isIOS && !standalone) {
+      box.innerHTML = '<div class="banner info"><b>🔔 Per ricevere le notifiche</b>Aggiungi l\'app alla schermata Home:' +
+        '<ol class="steps"><li>tocca <b>Condividi</b> <span style="font-size:17px">⬆️</span> qui sotto in Safari</li>' +
+        '<li>scegli <b>“Aggiungi alla schermata Home”</b></li><li>apri l\'icona <b>Lecce Perf</b> e attiva le notifiche</li></ol></div>';
+      return;
+    }
+    if (!('Notification' in window)) { box.innerHTML = ''; return; }
+    if (Notification.permission === 'granted') { box.innerHTML = ''; return; }
+    if (Notification.permission === 'denied') {
+      box.innerHTML = '<div class="banner err"><b>Notifiche bloccate</b>Riattivale dalle impostazioni del telefono (Notifiche → Lecce Perf).</div>'; return;
+    }
+    box.innerHTML = '<div class="card"><h2>🔔 Attiva le notifiche</h2><div class="note" style="margin:0">Ti avvisiamo noi quando c\'è da compilare il Morning o l\'RPE, e per gli avvisi dello staff.</div>' +
+      '<button class="btn y" id="bNotif">Attiva notifiche</button></div>';
+    $('bNotif').onclick = function () {
+      window.OneSignalDeferred.push(async function (OneSignal) {
+        try { await OneSignal.Notifications.requestPermission(); } catch (e) {}
+        var on = OneSignal.Notifications.permission;
+        api({ azione: 'registra', notifiche: on ? '1' : '0' });
+        notifBox();
+      });
+    };
+  }
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  if (CFG.ONESIGNAL_APP_ID && (!isIOS || standalone)) {
+    var base = location.pathname.replace(/[^/]*$/, '');
+    window.OneSignalDeferred.push(async function (OneSignal) {
+      try {
+        await OneSignal.init({ appId: CFG.ONESIGNAL_APP_ID, serviceWorkerPath: base.slice(1) + 'OneSignalSDKWorker.js',
+          serviceWorkerParam: { scope: base }, notifyButton: { enable: false }, allowLocalhostAsSecureOrigin: true });
+        await OneSignal.login(code);
+        if (OneSignal.Notifications.permission) api({ azione: 'registra', notifiche: '1' });
+      } catch (e) { console.warn(e); }
+      notifBox();
+    });
+  }
+  notifBox();
+
+  /* ── dati */
+  function api(extra) {
+    var u = CFG.API_URL + '?c=' + encodeURIComponent(code);
+    Object.keys(extra || {}).forEach(function (k) { u += '&' + k + '=' + encodeURIComponent(extra[k]); });
+    return fetch(u, { redirect: 'follow' }).then(function (r) { return r.json(); });
+  }
+
+  function load() {
+    api().then(function (d) {
+      if (!d.ok) { $('msg').innerHTML = '<div class="banner err"><b>Codice non riconosciuto</b>Chiedi allo staff il tuo link personale.</div>'; return; }
+      data = d; $('msg').innerHTML = '';
+      try { store.set('lecce_cache', JSON.stringify(d)); } catch (e) {}
+      render();
+      var ap = qs.get('apri');
+      if (ap && d[ap] && d[ap].link && !d[ap].compilato && !sessionStorage.getItem('opened_' + ap)) {
+        sessionStorage.setItem('opened_' + ap, '1'); location.href = d[ap].link;
+      }
+      if (qs.get('sez')) show(qs.get('sez'));
+    }).catch(function () {
+      var c = store.get('lecce_cache');
+      if (c && !data) { data = JSON.parse(c); render(); }
+      $('msg').innerHTML = '<div class="banner err"><b>Sei offline?</b>Non riesco ad aggiornare i dati. Riprova tra poco.</div>';
+    });
+  }
+
+  function taskCard(el, ic, title, st, sub, link, btn) {
+    var cls = st === 'ok' ? 'done' : st === 'late' ? 'late' : st === 'todo' ? 'todo' : '';
+    var badge = { ok: '<span class="badge ok">✓ Fatto</span>', todo: '<span class="badge todo">Da fare</span>', late: '<span class="badge late">In ritardo</span>', off: '<span class="badge off">Non oggi</span>' }[st] || '';
+    el.innerHTML = '<div class="task ' + cls + '"><div class="ic">' + ic + '</div><div class="tx"><b>' + title + '</b><span>' + sub + '</span></div>' + badge + '</div>' +
+      (link && st !== 'ok' && st !== 'off' ? '<a class="btn main" href="' + esc(link) + '">' + btn + '</a>' : '') +
+      (link && st === 'ok' ? '<a class="btn sec" href="' + esc(link) + '">Compila di nuovo</a>' : '');
+  }
+
+  function render() {
+    var d = data;
+    $('hi').textContent = 'Ciao ' + d.nome + '!';
+    var hm = (function () { var n = new Date(); return n.getHours() * 60 + n.getMinutes(); })();
+    var toM = function (s) { var p = String(s || '').split(':'); return p.length > 1 ? (+p[0]) * 60 + (+p[1]) : null; };
+
+    var m = d.morning, ms;
+    if (!m.previsto) ms = m.compilato ? 'ok' : 'off';
+    else ms = m.compilato ? 'ok' : (hm > toM(m.scadenza) ? 'late' : 'todo');
+    taskCard($('c-morning'), '☀️', 'Morning', ms,
+      m.compilato ? 'Compilato alle ' + (m.ora || '—') : (m.previsto ? 'Da compilare entro le ' + m.scadenza : 'Oggi non è richiesto'),
+      m.link, 'Compila il Morning');
+
+    var r = d.rpe, rs;
+    if (r.compilato) rs = 'ok';
+    else if (!r.previsto) rs = 'off';
+    else rs = r.aperto ? 'todo' : 'off';
+    taskCard($('c-rpe'), '💪', 'RPE allenamento', rs,
+      r.compilato ? 'Compilato alle ' + (r.ora || '—') : (r.previsto ? (r.aperto ? 'Quanto è stato faticoso l\'allenamento? (0-10)' : 'Si compila a fine allenamento (' + r.dopo.join(' / ') + ')') : 'Nessun allenamento oggi'),
+      r.link, 'Compila l\'RPE');
+    if (rs === 'off' && r.previsto && !r.compilato) $('c-rpe').querySelector('.badge').outerHTML = '<span class="badge off">Più tardi</span>';
+
+    // prossimo impegno
+    var today = todayKey(), nx = d.programma.filter(function (e) { return e.data > today || (e.data === today && (toM(e.ora) == null || toM(e.ora) >= hm - 60)); })[0];
+    $('c-next').innerHTML = '<h2>📅 Prossimo impegno</h2>' + (nx ? evHtml(nx, true) : '<div class="empty">Nessun impegno in programma.</div>') +
+      '<button class="btn sec" onclick="document.querySelector(\'nav button[data-s=programma]\').click()">Tutto il programma</button>';
+
+    // programma
+    var by = {}, keys = [];
+    d.programma.forEach(function (e) { if (!by[e.data]) { by[e.data] = []; keys.push(e.data); } by[e.data].push(e); });
+    $('c-prog').innerHTML = '<h2>Programma · prossimi 14 giorni</h2>' + (keys.length ? keys.map(function (k) {
+      return '<div class="day' + (k === today ? ' today' : '') + '">' + (k === today ? 'Oggi · ' : '') + fmtDay(k, true) + '</div>' + by[k].map(function (e) { return evHtml(e); }).join('');
+    }).join('') : '<div class="empty">Il programma non è ancora stato pubblicato.</div>');
+
+    // palestra
+    $('c-gym').innerHTML = d.schede.length ? d.schede.map(function (s) {
+      return '<div class="card"><h2>🏋️ ' + esc(s.titolo) + '</h2>' + (s.dal || s.al ? '<div class="note" style="margin:0">' + (s.dal ? 'dal ' + s.dal : '') + (s.al ? ' al ' + s.al : '') + '</div>' : '') +
+        '<div class="ex">' + esc(s.contenuto) + '</div>' + (s.video ? '<a class="btn sec" href="' + esc(s.video) + '" target="_blank" rel="noopener">▶️ Guarda il video</a>' : '') + '</div>';
+    }).join('') : '<div class="card"><div class="empty">Nessuna scheda palestra assegnata per oggi.</div></div>';
+
+    // avvisi
+    $('c-avv').innerHTML = '<h2>📢 Avvisi dello staff</h2>' + (d.avvisi.length ? d.avvisi.map(function (a) {
+      return '<div class="av"><small>' + esc(a.quando) + '</small>' + esc(a.testo) + '</div>';
+    }).join('') : '<div class="empty">Nessun avviso.</div>');
+    if (d.avvisi.length && store.get('lecce_av') !== d.avvisi[0].quando + d.avvisi[0].testo) $('avdot').parentNode.classList.add('dot');
+  }
+
+  function evHtml(e, withDay) {
+    return '<div class="ev"><div class="h">' + esc(e.ora || '—') + '</div><div class="w"><b>' + esc(e.attivita) + '</b><span>' +
+      [withDay ? fmtDay(e.data, true) : '', e.luogo, e.note].filter(Boolean).map(esc).join(' · ') + '</span></div></div>';
+  }
+
+  load();
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) load(); });
+})();
+</script>
+</body>
+</html>

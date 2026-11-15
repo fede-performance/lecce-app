@@ -1,0 +1,14 @@
+{
+  "name": "US Lecce · Performance",
+  "short_name": "Lecce Perf",
+  "description": "Morning, RPE, programma e scheda palestra della prima squadra",
+  "display": "standalone",
+  "background_color": "#0B2A55",
+  "theme_color": "#0B2A55",
+  "lang": "it",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
