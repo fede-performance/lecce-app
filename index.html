@@ -182,7 +182,7 @@ section[hidden]{display:none}
 
   /* ── dati */
   function api(extra) {
-    var u = CFG.API_URL + '?c=' + encodeURIComponent(code);
+    var u = CFG.API_URL + '?g=' + encodeURIComponent(code);
     Object.keys(extra || {}).forEach(function (k) { u += '&' + k + '=' + encodeURIComponent(extra[k]); });
     return fetch(u, { redirect: 'follow' }).then(function (r) { return r.json(); });
   }
