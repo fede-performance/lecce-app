@@ -1,0 +1,16 @@
+{
+  "name": "U.S. Lecce · Player Monitoring",
+  "short_name": "Lecce Staff",
+  "description": "Area staff: monitoraggio, report, infortuni e profiling della prima squadra",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0B1F44",
+  "theme_color": "#0B1F44",
+  "lang": "it",
+  "icons": [
+    {"src": "../icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "../icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "../icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

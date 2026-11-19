@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lecce Staff</title>
+<!-- Collegamento con lo stemma del Lecce all'app staff (Streamlit): l'icona di Streamlit non si può cambiare -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="icon" type="image/png" href="../icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lecce Staff">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0B1F44">
+<style>
+  html,body{margin:0;height:100%;background:#0B1F44;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .w{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;box-sizing:border-box;text-align:center}
+  img{width:96px;height:auto}
+  h1{margin:6px 0 0;font-size:22px;letter-spacing:.04em}
+  p{margin:0;color:#F7C600;font-weight:800;letter-spacing:.14em;font-size:12px}
+  a{margin-top:18px;background:#F7C600;color:#0B1F44;text-decoration:none;font-weight:800;padding:13px 26px;border-radius:12px}
+  small{color:#8FA2C6;max-width:320px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="w">
+  <img src="../crest.png" alt="U.S. Lecce">
+  <h1>U.S. LECCE</h1>
+  <p>PLAYER MONITORING · STAFF</p>
+  <a id="go" href="https://performance-lab-ff.streamlit.app/">Entra nell'app</a>
+  <small>Per avere l'icona del Lecce sul telefono: iPhone → Safari → Condividi → «Aggiungi alla schermata Home».
+  Android → Chrome → ⋮ → «Aggiungi a schermata Home».</small>
+</div>
+<script>
+  // Aperta dall'icona sulla schermata Home → vai subito all'app staff
+  var app = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (app) { location.replace(document.getElementById('go').href); }
+</script>
+</body>
+</html>
