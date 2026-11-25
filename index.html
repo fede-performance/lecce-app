@@ -229,9 +229,12 @@ section[hidden]{display:none}
     var r = d.rpe, rs;
     if (r.compilato) rs = 'ok';
     else if (!r.previsto) rs = 'off';
+    else if (r.scadenza && hm > toM(r.scadenza)) rs = 'late';   // r.scadenza = orario «Entro le» della scheda Orario
     else rs = r.aperto ? 'todo' : 'off';
+    var rAperto = 'Quanto è stato faticoso l\'allenamento? (0-10)' + (r.scadenza ? ' · entro le ' + r.scadenza : '');
+    var rChiuso = r.scadenza ? 'Da compilare entro le ' + r.scadenza : 'Si compila a fine allenamento (' + (r.dopo || []).join(' / ') + ')';
     taskCard($('c-rpe'), '💪', 'RPE allenamento', rs,
-      r.compilato ? 'Compilato alle ' + (r.ora || '—') : (r.previsto ? (r.aperto ? 'Quanto è stato faticoso l\'allenamento? (0-10)' : 'Si compila a fine allenamento (' + r.dopo.join(' / ') + ')') : 'Nessun allenamento oggi'),
+      r.compilato ? 'Compilato alle ' + (r.ora || '—') : (r.previsto ? (rs === 'off' ? rChiuso : rAperto) : 'Nessun allenamento oggi'),
       r.link, 'Compila l\'RPE');
     if (rs === 'off' && r.previsto && !r.compilato) $('c-rpe').querySelector('.badge').outerHTML = '<span class="badge off">Più tardi</span>';
 
